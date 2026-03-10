@@ -3,13 +3,13 @@ include("view/header.php");
 ?>
 
 <!-- Display Courses -->
-<?php if (!empty($courses)) : ?>
+<?php if (!empty($courses)): ?>
     <section id="list" class="course-container">
         <header>
             <h1>Course List</h1>
         </header>
 
-        <?php foreach ($courses as $course) : ?>
+        <?php foreach ($courses as $course): ?>
             <div class="list__row">
                 <div class="list__item">
 
@@ -17,17 +17,20 @@ include("view/header.php");
                 </div>
                 <div class="list__removed">
 
+                    <a href=".?action=edit_course&course_id=<?= $course['courseID'] ?>">Edit</a>
+
                     <form action="." method="post">
                         <input type="hidden" name="action" value="delete_course">
                         <input type="hidden" name="course_id" value="<?= $course['courseID'] ?>">
-                        <button class="remove-button" onclick="return confirm('Are you sure you want to delete this course?')">X</button>
+                        <button class="remove-button"
+                            onclick="return confirm('Are you sure you want to delete this course?')">X</button>
                     </form>
 
                 </div>
             </div>
         <?php endforeach; ?>
     </section>
-<?php else : ?>
+<?php else: ?>
 
     <p>No Courses exist yet</p>
 <?php endif; ?>

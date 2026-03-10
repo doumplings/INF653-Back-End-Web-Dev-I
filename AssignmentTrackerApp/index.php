@@ -84,6 +84,27 @@ switch ($action) {
             exit();
         }
         break;
+    case "edit_course":
+        if ($course_id) {
+            $course = get_course_by_id($course_id);
+            include('view/update_course.php');
+        } else {
+            $error = "Missing or incorrect course id.";
+            include('view/error.php');
+            exit();
+        }
+        break;
+    case "update_course":
+        if ($course_id && !empty($course_name)) {
+            update_course($course_id, $course_name);
+            header("Location: .?action=list_courses");
+            exit();
+        } else {
+            $error = "Invalid course data. Check all fields and try again.";
+            include('view/error.php');
+            exit();
+        }
+        break;
     default:
         $courses = get_courses();
         $assignments = get_assignments_by_course($course_id);
