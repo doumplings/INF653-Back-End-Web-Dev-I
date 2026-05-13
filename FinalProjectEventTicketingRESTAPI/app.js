@@ -12,11 +12,19 @@ const notFound = require('./middleware/notFound');
 
 const app = express();
 
-connectDB();
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Connect to MongoDB lazily on first request and cache for subsequent calls
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    res.status(503).json({ error: 'Database unavailable. Check MONGO_URI environment variable.' });
+  }
+});
 
 // API routes
 app.use('/api/auth', authRoutes);
