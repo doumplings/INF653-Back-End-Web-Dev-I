@@ -21,14 +21,14 @@ A full-featured REST API for an Event Ticketing System built with **Node.js**, *
 
 ## Tech Stack
 
-| Layer       | Technology            |
-|-------------|----------------------|
-| Runtime     | Node.js              |
-| Framework   | Express 4            |
-| Database    | MongoDB + Mongoose   |
-| Auth        | JWT (jsonwebtoken)   |
-| Passwords   | bcryptjs             |
-| QR Codes    | qrcode               |
+| Layer     | Technology         |
+| --------- | ------------------ |
+| Runtime   | Node.js            |
+| Framework | Express 4          |
+| Database  | MongoDB + Mongoose |
+| Auth      | JWT (jsonwebtoken) |
+| Passwords | bcryptjs           |
+| QR Codes  | qrcode             |
 
 ---
 
@@ -53,13 +53,13 @@ cp .env.example .env
 
 Create a `.env` file in the root directory (see `.env.example`):
 
-| Variable        | Description                            | Example                          |
-|-----------------|----------------------------------------|----------------------------------|
-| `MONGO_URI`     | MongoDB connection string              | `mongodb://localhost:27017/...`  |
-| `JWT_SECRET`    | Secret key for signing JWT tokens      | `a_long_random_string`           |
-| `JWT_EXPIRES_IN`| Token expiry duration                  | `7d`                             |
-| `PORT`          | Server port                            | `5000`                           |
-| `NODE_ENV`      | Environment mode                       | `development` / `production`     |
+| Variable         | Description                       | Example                         |
+| ---------------- | --------------------------------- | ------------------------------- |
+| `MONGO_URI`      | MongoDB connection string         | `mongodb://localhost:27017/...` |
+| `JWT_SECRET`     | Secret key for signing JWT tokens | `a_long_random_string`          |
+| `JWT_EXPIRES_IN` | Token expiry duration             | `7d`                            |
+| `PORT`           | Server port                       | `5000`                          |
+| `NODE_ENV`       | Environment mode                  | `development` / `production`    |
 
 > **Never commit your `.env` file.** It is listed in `.gitignore`.
 
@@ -75,7 +75,7 @@ npm run dev
 npm start
 ```
 
-The server will start at `http://localhost:5000`.
+The server will start at `http://localhost:3000`.
 
 ---
 
@@ -93,35 +93,35 @@ All API routes are prefixed with `/api/`.
 
 ### Authentication
 
-| Method | Endpoint              | Access  | Description                        |
-|--------|-----------------------|---------|------------------------------------|
-| POST   | `/api/auth/register`  | Public  | Register a new user                |
-| POST   | `/api/auth/login`     | Public  | Login and receive a JWT token      |
-| GET    | `/api/auth/me`        | User    | Get current logged-in user profile |
+| Method | Endpoint             | Access | Description                        |
+| ------ | -------------------- | ------ | ---------------------------------- |
+| POST   | `/api/auth/register` | Public | Register a new user                |
+| POST   | `/api/auth/login`    | Public | Login and receive a JWT token      |
+| GET    | `/api/auth/me`       | User   | Get current logged-in user profile |
 
 ### Events
 
-| Method | Endpoint           | Access  | Description                                  |
-|--------|--------------------|---------|----------------------------------------------|
-| GET    | `/api/events`      | Public  | Get all events (supports `?category=` `?date=YYYY-MM-DD`) |
-| GET    | `/api/events/:id`  | Public  | Get a single event by ID                     |
-| POST   | `/api/events`      | Admin   | Create a new event                           |
-| PUT    | `/api/events/:id`  | Admin   | Update an event                              |
-| DELETE | `/api/events/:id`  | Admin   | Delete an event (and its bookings)           |
+| Method | Endpoint          | Access | Description                                               |
+| ------ | ----------------- | ------ | --------------------------------------------------------- |
+| GET    | `/api/events`     | Public | Get all events (supports `?category=` `?date=YYYY-MM-DD`) |
+| GET    | `/api/events/:id` | Public | Get a single event by ID                                  |
+| POST   | `/api/events`     | Admin  | Create a new event                                        |
+| PUT    | `/api/events/:id` | Admin  | Update an event                                           |
+| DELETE | `/api/events/:id` | Admin  | Delete an event (and its bookings)                        |
 
 ### Bookings
 
-| Method | Endpoint                       | Access  | Description                              |
-|--------|--------------------------------|---------|------------------------------------------|
-| GET    | `/api/bookings`                | User    | Get all bookings for the logged-in user  |
-| GET    | `/api/bookings/:id`            | User    | Get a single booking (must own it)       |
-| POST   | `/api/bookings`                | User    | Create a booking                         |
-| GET    | `/api/bookings/validate/:qr`   | Admin   | Validate a ticket by booking ID          |
+| Method | Endpoint                     | Access | Description                             |
+| ------ | ---------------------------- | ------ | --------------------------------------- |
+| GET    | `/api/bookings`              | User   | Get all bookings for the logged-in user |
+| GET    | `/api/bookings/:id`          | User   | Get a single booking (must own it)      |
+| POST   | `/api/bookings`              | User   | Create a booking                        |
+| GET    | `/api/bookings/validate/:qr` | Admin  | Validate a ticket by booking ID         |
 
 ### Admin (Bonus)
 
-| Method | Endpoint               | Access | Description                                    |
-|--------|------------------------|--------|------------------------------------------------|
+| Method | Endpoint               | Access | Description                                     |
+| ------ | ---------------------- | ------ | ----------------------------------------------- |
 | GET    | `/api/admin/dashboard` | Admin  | All events with their booking details and users |
 
 ---
@@ -129,6 +129,7 @@ All API routes are prefixed with `/api/`.
 ## Request & Response Examples
 
 ### Register
+
 ```http
 POST /api/auth/register
 Content-Type: application/json
@@ -141,6 +142,7 @@ Content-Type: application/json
 ```
 
 ### Login
+
 ```http
 POST /api/auth/login
 Content-Type: application/json
@@ -152,6 +154,7 @@ Content-Type: application/json
 ```
 
 ### Create Event (Admin)
+
 ```http
 POST /api/events
 Authorization: Bearer <admin_token>
@@ -170,6 +173,7 @@ Content-Type: application/json
 ```
 
 ### Book a Ticket
+
 ```http
 POST /api/bookings
 Authorization: Bearer <user_token>
