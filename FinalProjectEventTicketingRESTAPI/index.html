@@ -1,217 +1,261 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Event Ticketing REST API</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Ticketing REST API</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    :root {
-      --bg: #0d0f14;
-      --surface: #13161d;
-      --border: #1e2330;
-      --accent: #e8c97e;
-      --accent-dim: rgba(232, 201, 126, 0.12);
-      --text: #e8e6e0;
-      --muted: #6b7280;
-      --mono: 'DM Mono', monospace;
-      --serif: 'DM Serif Display', serif;
-    }
+      :root {
+        --bg: #0d0f14;
+        --surface: #13161d;
+        --border: #1e2330;
+        --accent: #e8c97e;
+        --accent-dim: rgba(232, 201, 126, 0.12);
+        --text: #e8e6e0;
+        --muted: #6b7280;
+        --mono: "DM Mono", monospace;
+        --serif: "DM Serif Display", serif;
+      }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--mono);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--mono);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
 
-    /* Subtle grid background */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 48px 48px;
-      opacity: 0.5;
-      pointer-events: none;
-    }
+      /* Subtle grid background */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(var(--border) 1px, transparent 1px),
+          linear-gradient(90deg, var(--border) 1px, transparent 1px);
+        background-size: 48px 48px;
+        opacity: 0.5;
+        pointer-events: none;
+      }
 
-    /* Glow blobs */
-    body::after {
-      content: '';
-      position: fixed;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(232,201,126,0.07) 0%, transparent 70%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
+      /* Glow blobs */
+      body::after {
+        content: "";
+        position: fixed;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(232, 201, 126, 0.07) 0%,
+          transparent 70%
+        );
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
 
-    .card {
-      position: relative;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 56px 64px;
-      max-width: 560px;
-      width: 90%;
-      text-align: center;
-      animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
+      .card {
+        position: relative;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 56px 64px;
+        max-width: 560px;
+        width: 90%;
+        text-align: center;
+        animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
 
-    /* Top accent line */
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 32px; right: 32px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      border-radius: 0 0 2px 2px;
-    }
+      /* Top accent line */
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 32px;
+        right: 32px;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent),
+          transparent
+        );
+        border-radius: 0 0 2px 2px;
+      }
 
-    .tag {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: var(--accent-dim);
-      border: 1px solid rgba(232,201,126,0.25);
-      padding: 4px 12px;
-      border-radius: 2px;
-      margin-bottom: 28px;
-      animation: fadeUp 0.7s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
+      .tag {
+        display: inline-block;
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent);
+        background: var(--accent-dim);
+        border: 1px solid rgba(232, 201, 126, 0.25);
+        padding: 4px 12px;
+        border-radius: 2px;
+        margin-bottom: 28px;
+        animation: fadeUp 0.7s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
 
-    h1 {
-      font-family: var(--serif);
-      font-size: 2.4rem;
-      font-weight: 400;
-      line-height: 1.15;
-      color: var(--text);
-      margin-bottom: 16px;
-      animation: fadeUp 0.7s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
+      h1 {
+        font-family: var(--serif);
+        font-size: 2.4rem;
+        font-weight: 400;
+        line-height: 1.15;
+        color: var(--text);
+        margin-bottom: 16px;
+        animation: fadeUp 0.7s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
 
-    h1 em {
-      font-style: italic;
-      color: var(--accent);
-    }
+      h1 em {
+        font-style: italic;
+        color: var(--accent);
+      }
 
-    p {
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.75;
-      margin-bottom: 40px;
-      animation: fadeUp 0.7s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
+      p {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.75;
+        margin-bottom: 40px;
+        animation: fadeUp 0.7s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--accent);
-      color: #0d0f14;
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 14px 32px;
-      border-radius: 2px;
-      transition: opacity 0.2s, transform 0.2s;
-      animation: fadeUp 0.7s 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--accent);
+        color: #0d0f14;
+        font-family: var(--mono);
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 14px 32px;
+        border-radius: 2px;
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+        animation: fadeUp 0.7s 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
 
-    .btn:hover {
-      opacity: 0.88;
-      transform: translateY(-1px);
-    }
+      .btn:hover {
+        opacity: 0.88;
+        transform: translateY(-1px);
+      }
 
-    .btn svg {
-      transition: transform 0.2s;
-    }
-    .btn:hover svg {
-      transform: translateX(3px);
-    }
+      .btn svg {
+        transition: transform 0.2s;
+      }
+      .btn:hover svg {
+        transform: translateX(3px);
+      }
 
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 40px 0 28px;
-      animation: fadeUp 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
+      .divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 40px 0 28px;
+        animation: fadeUp 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
 
-    .meta {
-      font-size: 0.7rem;
-      color: var(--muted);
-      animation: fadeUp 0.7s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
+      .meta {
+        font-size: 0.7rem;
+        color: var(--muted);
+        animation: fadeUp 0.7s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
 
-    .meta a {
-      color: var(--muted);
-      text-decoration: none;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1px;
-      transition: color 0.2s, border-color 0.2s;
-    }
+      .meta a {
+        color: var(--muted);
+        text-decoration: none;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1px;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+      }
 
-    .meta a:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-    }
+      .meta a:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-</head>
-<body>
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <span class="tag">INF653 · Final Project</span>
 
-  <div class="card">
-    <span class="tag">INF653 · Final Project</span>
+      <h1>Event Ticketing<br /><em>REST API</em></h1>
 
-    <h1>Event Ticketing<br /><em>REST API</em></h1>
+      <p>
+        A back-end web service for managing events,<br />
+        tickets, and transactions — built with Node.js.
+      </p>
 
-    <p>
-      A back-end web service for managing events,<br />
-      tickets, and transactions — built with Node.js.
-    </p>
-
-    <a class="btn" href="https://eventticketingrestapi.netlify.app/">
-      Open Live API
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2 7H12M12 7L7.5 2.5M12 7L7.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
-
-    <hr class="divider" />
-
-    <p class="meta">
-      Source code on
-      <a href="https://github.com/doumplings/INF653-Back-End-Web-Dev-I/tree/main/FinalProjectEventTicketingRESTAPI" target="_blank" rel="noopener">
-        GitHub
+      <a class="btn" href="https://eventticketingrestapi.netlify.app/">
+        Open Live API
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M2 7H12M12 7L7.5 2.5M12 7L7.5 11.5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
       </a>
-      &nbsp;·&nbsp; Back-End Web Dev I
-    </p>
-  </div>
 
-</body>
+      <hr class="divider" />
+
+      <p class="meta">
+        Source code on
+        <a
+          href="https://github.com/doumplings/INF653-Back-End-Web-Dev-I/tree/main/FinalProjectEventTicketingRESTAPI"
+          target="_blank"
+          rel="noopener"
+        >
+          GitHub
+        </a>
+        &nbsp;·&nbsp; Back-End Web Dev I
+      </p>
+    </div>
+  </body>
 </html>

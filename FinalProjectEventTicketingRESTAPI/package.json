@@ -7,7 +7,14 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": ["event", "ticketing", "api", "nodejs", "express", "mongodb"],
+  "keywords": [
+    "event",
+    "ticketing",
+    "api",
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
   "author": "Derek Oum",
   "license": "ISC",
   "dependencies": {
@@ -17,7 +24,8 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
-    "qrcode": "^1.5.3"
+    "qrcode": "^1.5.3",
+    "serverless-http": "^4.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.3"
