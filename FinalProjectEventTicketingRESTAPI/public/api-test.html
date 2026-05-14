@@ -254,7 +254,7 @@
         <label>date (optional)<input id="ev-date" placeholder="2026-07-20" /></label>
       </div>
       <div class="controls">
-        <button onclick="getEvents()">Send</button>
+        <button onclick="submitGetEvents()">Send</button>
         <span class="status-code" id="r4-status"></span>
       </div>
       <pre id="r4"></pre>
@@ -295,7 +295,7 @@
         <label class="full">description<textarea id="ce-desc" placeholder="Optional description"></textarea></label>
       </div>
       <div class="controls">
-        <button onclick="createEvent()">Send</button>
+        <button onclick="submitCreateEvent()">Send</button>
         <span class="status-code" id="r6-status"></span>
       </div>
       <pre id="r6"></pre>
@@ -316,7 +316,7 @@
         <label>price<input id="ue-price" type="number" placeholder="50" /></label>
       </div>
       <div class="controls">
-        <button onclick="updateEvent()">Send</button>
+        <button onclick="submitUpdateEvent()">Send</button>
         <span class="status-code" id="r7-status"></span>
       </div>
       <pre id="r7"></pre>
@@ -486,7 +486,7 @@
     }
   }
 
-  function getEvents() {
+  function submitGetEvents() {
     let qs = '';
     const cat  = v('ev-cat');
     const date = v('ev-date');
@@ -495,7 +495,7 @@
     ep('GET', '/events' + qs, null, 'r4');
   }
 
-  function createEvent() {
+  function submitCreateEvent() {
     const body = {};
     const map = { title:'ce-title', category:'ce-cat', venue:'ce-venue', date:'ce-date',
                   time:'ce-time', description:'ce-desc' };
@@ -507,7 +507,7 @@
     ep('POST', '/events', body, 'r6');
   }
 
-  function updateEvent() {
+  function submitUpdateEvent() {
     const id = v('ue-id');
     const body = {};
     const title = v('ue-title'); if (title) body.title = title;
