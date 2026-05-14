@@ -1,6 +1,7 @@
 const QRCode = require('qrcode');
 const Booking = require('../models/Booking');
 const Event = require('../models/Event');
+const { sendBookingConfirmation } = require('../services/emailService');
 
 // GET /api/bookings  — return only bookings for the logged-in user
 const getMyBookings = async (req, res, next) => {
@@ -95,9 +96,28 @@ const createBooking = async (req, res, next) => {
       'title date time venue price category'
     );
 
+    let emailResult = null;
+    try {
+      emailResult = await sendBookingConfirmation({
+        to: req.user.email,
+        userName: req.user.name,
+        eventTitle: populatedBooking.event.title,
+        eventDate: populatedBooking.event.date,
+        eventVenue: populatedBooking.event.venue,
+        quantity,
+        bookingId: booking._id.toString(),
+        qrCode,
+      });
+    } catch (emailError) {
+      console.error('Email sending failed (non-fatal):', emailError.message);
+    }
+
     res.status(201).json({
       message: 'Booking confirmed',
       booking: populatedBooking,
+      email: emailResult
+        ? { sent: true, to: req.user.email, previewUrl: emailResult.previewUrl }
+        : { sent: false },
     });
   } catch (error) {
     next(error);

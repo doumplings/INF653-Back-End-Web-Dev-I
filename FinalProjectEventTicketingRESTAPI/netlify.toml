@@ -2,6 +2,12 @@
   functions = "netlify/functions"
   publish = "public"
 
+[functions]
+  node_bundler = "esbuild"
+
+[functions."api"]
+  timeout = 26
+
 # Route all /api/* requests to the serverless function
 # Without :splat, Netlify passes the original full path to the function
 # so Express still sees /api/auth/... , /api/events/... etc.

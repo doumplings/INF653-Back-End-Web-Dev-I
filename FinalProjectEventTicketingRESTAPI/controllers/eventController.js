@@ -45,7 +45,7 @@ const createEvent = async (req, res, next) => {
   try {
     const { title, description, category, venue, date, time, seatCapacity, price } = req.body;
 
-    if (!title || !date || !seatCapacity || price === undefined || price === null) {
+    if (!title || !date || seatCapacity === undefined || seatCapacity === null || price === undefined || price === null) {
       return res.status(400).json({ error: 'title, date, seatCapacity, and price are required' });
     }
 

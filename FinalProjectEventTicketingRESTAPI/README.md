@@ -58,7 +58,7 @@ Create a `.env` file in the root directory (see `.env.example`):
 | `MONGO_URI`      | MongoDB connection string         | `mongodb://localhost:27017/...` |
 | `JWT_SECRET`     | Secret key for signing JWT tokens | `a_long_random_string`          |
 | `JWT_EXPIRES_IN` | Token expiry duration             | `7d`                            |
-| `PORT`           | Server port                       | `5000`                          |
+| `PORT`           | Server port                       | `3000`                          |
 | `NODE_ENV`       | Environment mode                  | `development` / `production`    |
 
 > **Never commit your `.env` file.** It is listed in `.gitignore`.
